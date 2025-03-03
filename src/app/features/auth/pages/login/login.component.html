@@ -1,0 +1,23 @@
+<section class="flex flex-col space-y-1.5 p-6 -mb-2">
+  <h1 class="text-neutral-50 font-semibold tracking-tight text-3xl">Login</h1>
+  <h1 class="text-neutral-100 text-sm">
+    Create connection around the world in minutes.
+  </h1>
+</section>
+
+<section class="p-6 pt-0">
+  <app-button
+    class="w-full"
+    [props]="{ label: 'Continue with Google', color: 'neutral', size: 'lg' }"
+  ></app-button>
+
+  <div class="relative my-3">
+    <div class="absolute inset-0 flex items-center">
+      <div class="w-full border-t border-gray-400"></div>
+    </div>
+
+    <div class="relative flex justify-center text-lg">
+      <span class="px-2 bg-neutral-950 text-white">OR</span>
+    </div>
+  </div>
+</section>

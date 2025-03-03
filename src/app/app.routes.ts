@@ -8,8 +8,8 @@ export const routes: Routes = [
   },
   {
     path: 'auth',
-    loadComponent: () =>
-      import('./features/auth/auth.component').then((c) => c.AuthComponent),
+    loadChildren: () =>
+      import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
   },
   {
     path: 'portal',
