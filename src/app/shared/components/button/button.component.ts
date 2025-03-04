@@ -5,7 +5,7 @@ import { Size, SizeType } from '@core/constants/size.constant';
 
 type ButtonType = 'solid' | 'outline' | 'text';
 
-type FabButtonType = 'fab' | 'fab-outline' | 'fab-icon';
+type FabButtonType = 'fab-solid' | 'fab-outline' | 'fab-icon';
 
 interface BaseButtonProps {
   label?: string;
@@ -36,8 +36,9 @@ export type ButtonProps = NotFabButtonProps | FabButtonProps;
 export class ButtonComponent implements OnInit {
   @Input() props?: ButtonProps;
   @Input() disabled = false;
+  @Output() onButtonClick = new EventEmitter<void>();
 
-  fabTypes = ['fab', 'fab-outline', 'fab-icon'];
+  fabTypes = ['fab-solid', 'fab-outline', 'fab-icon'];
   buttonTypes = {
     Solid: 'solid',
     Outline: 'outline',
@@ -49,8 +50,6 @@ export class ButtonComponent implements OnInit {
   color = Color;
   size = Size;
   type!: string;
-
-  @Output() onButtonClick = new EventEmitter<void>();
 
   ngOnInit(): void {
     this.type = this.props?.type ?? this.buttonTypes.Solid;

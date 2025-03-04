@@ -16,19 +16,19 @@
       'px-6 py-2':
         props?.size === size.Large || props?.size === size.ExtraLarge,
 
-      'bg-primary-500 text-primary-50 active:bg-primary-700 hover:bg-primary-600  disabled:text-primary-400 disabled:bg-primary-100':
+      'bg-primary-500 text-primary-50 active:bg-primary-700 hover:bg-primary-600':
         !props?.color || props?.color === color.Primary,
 
-      'bg-warning-500 text-warning-50 active:bg-warning-700 hover:bg-warning-600  disabled:text-warning-400 disabled:bg-warning-100':
+      'bg-warning-500 text-warning-50 active:bg-warning-700 hover:bg-warning-600':
         props?.color === color.Warning,
 
-      'bg-error-500 text-error-50 active:bg-error-700 hover:bg-error-600  disabled:text-error-400 disabled:bg-error-100':
+      'bg-error-500 text-error-50 active:bg-error-700 hover:bg-error-600':
         props?.color === color.Error,
 
-      'bg-success-500 text-success-50 active:bg-success-700 hover:bg-success-600  disabled:text-success-400 disabled:bg-success-100':
+      'bg-success-500 text-success-50 active:bg-success-700 hover:bg-success-600':
         props?.color === color.Success,
 
-      'bg-neutral-500 text-neutral-50 active:bg-neutral-700 hover:bg-neutral-600  disabled:text-neutral-400 disabled:bg-neutral-100':
+      'bg-neutral-500 text-neutral-50 active:bg-neutral-700 hover:bg-neutral-600':
         props?.color === color.Neutral,
     }"
     [disabled]="disabled"
@@ -37,37 +37,207 @@
     <ng-container *ngTemplateOutlet="label"></ng-container>
   </button>
 }
-@if (type === buttonTypes.Outline) {}
-@if (type === buttonTypes.Text) {}
-@if (type === buttonTypes.FabSolid) {}
-@if (type === buttonTypes.FabOutline) {}
-@if (type === buttonTypes.FabIcon) {}
+@if (type === buttonTypes.Outline) {
+  <button
+    data-slot="button"
+    class="outline-none transition-colors duration-200 ease-in-out font-medium border disabled:border-neutral-200 disabled:text-neutral-400 disabled:bg-neutral-100 w-[inherit]"
+    [class.pointer-events-none]="disabled"
+    [ngClass]="{
+      'rounded-[15px]':
+        props?.size !== size.Small || props?.size === size.ExtraSmall,
+      'rounded-[10px]':
+        !props?.size ||
+        props?.size === size.Small ||
+        props?.size === size.ExtraSmall,
+
+      'px-5 py-1.5': !props?.size || props?.size === size.Medium,
+      'px-3 py-1': props?.size === size.Small,
+      'px-6 py-2':
+        props?.size === size.Large || props?.size === size.ExtraLarge,
+
+      'border-primary-500 text-primary-50 active:border-primary-700 active:bg-primary-700 hover:border-primary-600 hover:bg-primary-400/40':
+        !props?.color || props?.color === color.Primary,
+
+      'border-warning-500 text-warning-50 active:border-warning-700 active:bg-warning-700 hover:border-warning-600 hover:bg-warning-400/40':
+        props?.color === color.Warning,
+
+      'border-error-500 text-error-50 active:border-error-700 active:bg-error-700 hover:border-error-600 hover:bg-error-400/40':
+        props?.color === color.Error,
+
+      'border-success-500 text-success-50 active:border-success-700 active:bg-success-700 hover:border-success-600 hover:bg-success-400/40':
+        props?.color === color.Success,
+
+      'border-neutral-500 text-neutral-50 active:border-neutral-700 active:bg-neutral-700 hover:border-neutral-600 hover:bg-neutral-400/40':
+        props?.color === color.Neutral,
+    }"
+    [disabled]="disabled"
+    (click)="onButtonClick.emit()"
+  >
+    <ng-container *ngTemplateOutlet="label"></ng-container>
+  </button>
+}
+@if (type === buttonTypes.Text) {
+  <button
+    data-slot="button"
+    class="outline-none transition-colors duration-200 ease-in-out font-medium border border-transparent disabled:text-neutral-400 disabled:bg-neutral-100 w-[inherit]"
+    [class.pointer-events-none]="disabled"
+    [ngClass]="{
+      'rounded-[15px]':
+        props?.size !== size.Small || props?.size === size.ExtraSmall,
+      'rounded-[10px]':
+        !props?.size ||
+        props?.size === size.Small ||
+        props?.size === size.ExtraSmall,
+
+      'px-5 py-1.5': !props?.size || props?.size === size.Medium,
+      'px-3 py-1': props?.size === size.Small,
+      'px-6 py-2':
+        props?.size === size.Large || props?.size === size.ExtraLarge,
+
+      'hover:text-white': !props?.color || props?.color !== color.Neutral,
+
+      'text-primary-400 active:border-primary-700 active:bg-primary-700 hover:border-primary-600 hover:bg-primary-400/40':
+        !props?.color || props?.color === color.Primary,
+
+      'text-warning-400 active:border-warning-700 active:bg-warning-700 hover:border-warning-600 hover:bg-warning-400/40':
+        props?.color === color.Warning,
+
+      'text-error-400 active:border-error-700 active:bg-error-700 hover:border-error-600  hover:bg-error-400/40':
+        props?.color === color.Error,
+
+      'text-success-400 active:border-success-700 active:bg-success-700 hover:border-success-600 hover:bg-success-400/40':
+        props?.color === color.Success,
+
+      'text-neutral-50 active:border-neutral-700 active:bg-neutral-700 hover:border-neutral-600 hover:bg-neutral-400/40':
+        props?.color === color.Neutral,
+    }"
+    [disabled]="disabled"
+    (click)="onButtonClick.emit()"
+  >
+    <ng-container *ngTemplateOutlet="label"></ng-container>
+  </button>
+}
+@if (type === buttonTypes.FabSolid) {
+  <button
+    data-slot="button"
+    class="outline-none flex items-center justify-center transition-colors duration-200 ease-in-out rounded-full font-medium disabled:text-neutral-400 disabled:bg-neutral-100"
+    [class.pointer-events-none]="disabled"
+    [ngClass]="{
+      'text-[1.4rem] p-5 h-6 w-6': props?.size === 'md',
+      'text-[0.75rem] p-3 h-2 w-2': !props?.size || props?.size === 'sm',
+      'text-[1.6rem] p-6 h-12 w-12':
+        props?.size === 'lg' || props?.size === 'xl',
+
+      'bg-primary-500 text-primary-50 active:bg-primary-700 hover:bg-primary-600  disabled:text-primary-400 disabled:bg-primary-100':
+        !props?.color || props?.color === 'primary',
+
+      'bg-success-500 text-success-50 active:bg-success-700 hover:bg-success-600  disabled:text-success-400 disabled:bg-success-100':
+        props?.color === 'success',
+
+      'bg-warning-500 text-warning-50 active:bg-warning-700 hover:bg-warning-600  disabled:text-warning-400 disabled:bg-warning-100':
+        props?.color === 'warning',
+
+      'bg-error-500 text-error-50 active:bg-error-700 hover:bg-error-600  disabled:text-error-400 disabled:bg-error-100':
+        props?.color === 'error',
+
+      'bg-neutral-500 text-neutral-50 active:bg-neutral-700 hover:bg-neutral-600  disabled:text-neutral-400 disabled:bg-neutral-100':
+        props?.color === 'neutral',
+    }"
+    [disabled]="disabled"
+    (click)="onButtonClick.emit()"
+  >
+    <ng-container *ngTemplateOutlet="label"></ng-container>
+  </button>
+}
+@if (type === buttonTypes.FabOutline) {
+  <button
+    data-slot="button"
+    class="outline-none flex items-center justify-center transition-colors duration-200 ease-in-out border rounded-full font-medium disabled:text-neutral-400 disabled:bg-neutral-100"
+    [class.pointer-events-none]="disabled"
+    [ngClass]="{
+      'text-[1.4rem] p-5 h-6 w-6': props?.size === 'md',
+      'text-[0.75rem] p-3 h-2 w-2': !props?.size || props?.size === 'sm',
+      'text-[1.6rem] p-6 h-12 w-12':
+        props?.size === 'lg' || props?.size === 'xl',
+
+      'border-primary-500 text-primary-50 active:bg-primary-700 hover:bg-primary-600  disabled:text-primary-400 disabled:bg-primary-100':
+        !props?.color || props?.color === 'primary',
+
+      'border-success-500 text-success-50 active:bg-success-700 hover:bg-success-600  disabled:text-success-400 disabled:bg-success-100':
+        props?.color === 'success',
+
+      'border-warning-500 text-warning-50 active:bg-warning-700 hover:bg-warning-600  disabled:text-warning-400 disabled:bg-warning-100':
+        props?.color === 'warning',
+
+      'border-error-500 text-error-50 active:bg-error-700 hover:bg-error-600  disabled:text-error-400 disabled:bg-error-100':
+        props?.color === 'error',
+
+      'border-neutral-500 text-neutral-50 active:bg-neutral-700 hover:bg-neutral-600  disabled:text-neutral-400 disabled:bg-neutral-100':
+        props?.color === 'neutral',
+    }"
+    [disabled]="disabled"
+    (click)="onButtonClick.emit()"
+  >
+    <ng-container *ngTemplateOutlet="label"></ng-container>
+  </button>
+}
+@if (type === buttonTypes.FabIcon) {
+  <button
+    data-slot="button"
+    class="outline-none flex items-center justify-center transition-colors duration-200 border border-transparent ease-in-out rounded-full font-medium disabled:text-neutral-400 disabled:bg-neutral-100"
+    [class.pointer-events-none]="disabled"
+    [ngClass]="{
+      'text-[1.4rem] p-5 h-6 w-6': props?.size === 'md',
+      'text-[0.75rem] p-3 h-2 w-2': !props?.size || props?.size === 'sm',
+      'text-[1.6rem] p-6 h-12 w-12':
+        props?.size === 'lg' || props?.size === 'xl',
+
+      'hover:text-white': !props?.color || props?.color !== color.Neutral,
+
+      'text-primary-500 active:bg-primary-700 hover:bg-primary-600  disabled:text-primary-400 disabled:bg-primary-100':
+        !props?.color || props?.color === 'primary',
+
+      'text-success-500 active:bg-success-700 hover:bg-success-600  disabled:text-success-400 disabled:bg-success-100':
+        props?.color === 'success',
+
+      'text-warning-500 active:bg-warning-700 hover:bg-warning-600  disabled:text-warning-400 disabled:bg-warning-100':
+        props?.color === 'warning',
+
+      'text-error-500 active:bg-error-700 hover:bg-error-600  disabled:text-error-400 disabled:bg-error-100':
+        props?.color === 'error',
+
+      'text-neutral-500 active:bg-neutral-700 hover:bg-neutral-600  disabled:text-neutral-400 disabled:bg-neutral-100':
+        props?.color === 'neutral',
+    }"
+    [disabled]="disabled"
+    (click)="onButtonClick.emit()"
+  >
+    <ng-container *ngTemplateOutlet="label"></ng-container>
+  </button>
+}
 
 <ng-template #label>
-  <div
-    *ngIf="!fabTypes.includes(type)"
-    data-slot="button-label"
-    class="flex gap-2 items-center justify-center"
-  >
-    <i
-      *ngIf="$any(props)?.prefixIcon"
-      data-slot="button-prefix-icon"
-      [class]="$any(props)?.prefixIcon"
-    ></i>
+  @if (fabTypes.includes(type)) {
+    <div data-slot="button-label" class="flex items-center">
+      <i data-slot="button-icon" [class]="$any(props).icon">i</i>
+    </div>
+  } @else {
+    <div
+      data-slot="button-label"
+      class="flex gap-2 items-center justify-center"
+    >
+      <i
+        *ngIf="$any(props)?.prefixIcon"
+        data-slot="button-prefix-icon"
+        [class]="$any(props)?.prefixIcon"
+      ></i>
 
-    <p data-slot="button-text" *ngIf="props?.label">{{ props?.label }}</p>
-    <i
-      *ngIf="$any(props)?.suffixIcon"
-      data-slot="button-suffix-icon"
-      [class]="$any(props)?.suffixIcon"
-    ></i>
-  </div>
-
-  <div
-    data-slot="button-label"
-    *ngIf="fabTypes.includes(type)"
-    class="flex items-center"
-  >
-    <i data-slot="button-icon" [class]="$any(props).icon"></i>
-  </div>
+      <p data-slot="button-text" *ngIf="props?.label">{{ props?.label }}</p>
+      <i
+        *ngIf="$any(props)?.suffixIcon"
+        data-slot="button-suffix-icon"
+        [class]="$any(props)?.suffixIcon"
+      ></i>
+    </div>
+  }
 </ng-template>
