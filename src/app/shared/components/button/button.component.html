@@ -1,16 +1,9 @@
 @if (type === buttonTypes.Solid) {
   <button
     data-slot="button"
-    class="outline-none transition-colors duration-200 ease-in-out font-medium disabled:text-neutral-400 disabled:bg-neutral-100 w-[inherit]"
+    class="outline-none transition-colors duration-200 ease-in-out font-medium rounded-xl disabled:text-neutral-400 disabled:bg-neutral-100 w-[inherit]"
     [class.pointer-events-none]="disabled"
     [ngClass]="{
-      'rounded-[15px]':
-        props?.size !== size.Small || props?.size === size.ExtraSmall,
-      'rounded-[10px]':
-        !props?.size ||
-        props?.size === size.Small ||
-        props?.size === size.ExtraSmall,
-
       'px-5 py-1.5': !props?.size || props?.size === size.Medium,
       'px-3 py-1': props?.size === size.Small,
       'px-6 py-2':
@@ -40,16 +33,9 @@
 @if (type === buttonTypes.Outline) {
   <button
     data-slot="button"
-    class="outline-none transition-colors duration-200 ease-in-out font-medium border disabled:border-neutral-200 disabled:text-neutral-400 disabled:bg-neutral-100 w-[inherit]"
+    class="outline-none transition-colors duration-200 ease-in-out font-medium rounded-xl border disabled:border-neutral-200 disabled:text-neutral-400 disabled:bg-neutral-100 w-[inherit]"
     [class.pointer-events-none]="disabled"
     [ngClass]="{
-      'rounded-[15px]':
-        props?.size !== size.Small || props?.size === size.ExtraSmall,
-      'rounded-[10px]':
-        !props?.size ||
-        props?.size === size.Small ||
-        props?.size === size.ExtraSmall,
-
       'px-5 py-1.5': !props?.size || props?.size === size.Medium,
       'px-3 py-1': props?.size === size.Small,
       'px-6 py-2':
@@ -79,16 +65,9 @@
 @if (type === buttonTypes.Text) {
   <button
     data-slot="button"
-    class="outline-none transition-colors duration-200 ease-in-out font-medium border border-transparent disabled:text-neutral-400 disabled:bg-neutral-100 w-[inherit]"
+    class="outline-none transition-colors duration-200 ease-in-out font-medium rounded-xl border border-transparent disabled:text-neutral-400 disabled:bg-neutral-100 w-[inherit]"
     [class.pointer-events-none]="disabled"
     [ngClass]="{
-      'rounded-[15px]':
-        props?.size !== size.Small || props?.size === size.ExtraSmall,
-      'rounded-[10px]':
-        !props?.size ||
-        props?.size === size.Small ||
-        props?.size === size.ExtraSmall,
-
       'px-5 py-1.5': !props?.size || props?.size === size.Medium,
       'px-3 py-1': props?.size === size.Small,
       'px-6 py-2':
