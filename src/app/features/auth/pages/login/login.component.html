@@ -1,23 +1,59 @@
 <section class="flex flex-col space-y-1.5 p-6 -mb-2">
   <h1 class="text-neutral-50 font-semibold tracking-tight text-3xl">Login</h1>
-  <h1 class="text-neutral-100 text-sm">
-    Create connection around the world in minutes.
-  </h1>
 </section>
 
 <section class="p-6 pt-0">
   <app-button
     class="w-full"
-    [props]="{ label: 'Continue with Google', color: 'neutral', size: 'lg' }"
+    [props]="{
+      label: 'Continue with Google',
+      color: 'neutral',
+      size: 'lg',
+      type: 'solid',
+    }"
   ></app-button>
 
-  <div class="relative my-3">
+  <section class="relative my-3">
     <div class="absolute inset-0 flex items-center">
       <div class="w-full border-t border-gray-400"></div>
     </div>
 
     <div class="relative flex justify-center text-lg">
-      <span class="px-2 bg-neutral-950 text-white">OR</span>
+      <span class="px-2 bg-neutral-950 text-white font-semibold">OR</span>
     </div>
-  </div>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <div>
+      <p class="inline-block text-sm font-medium text-white mb-1.5">Email</p>
+      <app-text-field
+        class="w-full"
+        [props]="formProps['email']"
+        [fGroup]="form"
+      ></app-text-field>
+    </div>
+
+    <div>
+      <p
+        class="inline-flex items-center justify-between w-full text-sm font-medium text-white mb-1.5"
+      >
+        <span>Password</span>
+        <span
+          class="underline select-none cursor-pointer hover:text-primary-500 active:text-primary-700"
+          >Forgot your password?</span
+        >
+      </p>
+      <app-password-field
+        [props]="formProps['password']"
+        [fGroup]="form"
+      ></app-password-field>
+    </div>
+
+    <app-button
+      class="w-full"
+      [props]="{ label: 'Login' }"
+      [disabled]="form.invalid"
+      (onButtonClick)="submit()"
+    ></app-button>
+  </section>
 </section>
