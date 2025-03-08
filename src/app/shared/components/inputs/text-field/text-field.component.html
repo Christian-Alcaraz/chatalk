@@ -3,7 +3,7 @@
     <p
       class="text-sm text-white"
       [ngClass]="{
-        '!text-error-500': formControl.errors && formControl.dirty,
+        '!text-error-500': fControl.errors && fControl.dirty,
       }"
     >
       {{ props.label }}
@@ -12,24 +12,24 @@
   <input
     [type]="props.type"
     [placeholder]="props.placeholder"
-    [formControl]="formControl"
+    [formControl]="fControl"
     class="bg-white py-2 px-3 rounded-xl w-full border hover:outline-2 hover:outline-offset-2 focus:outline-2 focus:outline-offset-2"
     [ngClass]="{
       'border-transparent hover:outline-primary-400 focus:outline-primary-500':
-        !formControl.errors,
+        !fControl.errors,
       'border-error-500 hover:outline-error-400 focus:outline-error-500':
-        formControl.errors && formControl.dirty,
+        fControl.errors && fControl.dirty,
     }"
   />
 
   @if (!props.hideError) {
     <app-input-error
-      [fControl]="formControl"
+      [fControl]="fControl"
       [labelProps]="props.label"
     ></app-input-error>
   }
 
-  @if (props.hint && formControl.errors) {
+  @if (props.hint && fControl.errors) {
     <!-- Show hint -->
   }
 </section>

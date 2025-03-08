@@ -1,66 +1,65 @@
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-
-interface FormProps {
-  formControl?: FormControl;
-  formGroup?: FormGroup;
-}
+import {
+  ControlContainer,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { ValidatorType } from '@core/interfaces/base-input.interface';
+import { valueMustMatchWithControlName } from '@shared/validators/custom-validators';
 
 export class BaseInput {
-  private _props: any;
-  private _formProps!: FormProps;
+  fControl!: FormControl;
+  fGroup!: FormGroup;
 
-  get formControl() {
-    if (this._formProps?.formControl) {
-      return this._formProps.formControl;
+  constructor(private _controlContainer: ControlContainer) {}
+
+  initFormControl(fcName: string, validators?: Validators) {
+    this.fGroup = this._controlContainer.control as FormGroup;
+    this.fControl = this.fGroup.get(fcName) as FormControl;
+
+    if (!this.fControl) {
+      throw new Error(`${fcName} is not a valid form control`);
     }
 
-    return this._formProps?.formGroup?.get(this._props.fcName) as FormControl;
+    if (validators) {
+      this._setFormValidators(validators);
+    }
   }
 
-  initializeForm(props: any, formProps: FormProps) {
-    if (!formProps?.formControl && !(props.fcName && formProps.formGroup)) {
-      throw new Error(`${props.label} has no FormControl or FormGroup`);
-    }
-    this._props = props;
-    this._formProps = formProps;
-    this._initializeValidators();
-  }
-
-  private _initializeValidators(): void {
-    if (!this._props?.validators) {
-      return;
-    }
-
-    const validators = [];
-
-    if (this._props.validators.required) {
-      validators.push(Validators.required);
-    }
-
-    if (this._props.validators.email) {
-      validators.push(Validators.email);
-    }
-
-    if (this._props.validators.max) {
-      validators.push(Validators.max(this._props.max));
-    }
-
-    if (this._props.validators.maxLength) {
-      validators.push(Validators.maxLength(this._props.maxLength));
-    }
-
-    if (this._props.validators.min) {
-      validators.push(Validators.min(this._props.min));
-    }
-
-    if (this._props.validators.minLength) {
-      validators.push(Validators.minLength(this._props.minlength));
-    }
-
-    for (const validator of validators) {
-      if (!this.formControl.hasValidator(validator)) {
-        this.formControl.setValidators(validators);
+  private _setFormValidators(validators: ValidatorType): void {
+    const requirements = [];
+    for (const [key, value] of Object.entries(validators)) {
+      if (value) {
+        switch (key) {
+          case 'required':
+            requirements.push(Validators.required);
+            break;
+          case 'minlength':
+            requirements.push(Validators.minLength(value));
+            break;
+          case 'maxlength':
+            requirements.push(Validators.maxLength(value));
+            break;
+          case 'min':
+            requirements.push(Validators.min(value));
+            break;
+          case 'max':
+            requirements.push(Validators.max(value));
+            break;
+          case 'email':
+            requirements.push(Validators.email);
+            break;
+          case 'mustMatchWithControl':
+            const matchingFormControl = this.fGroup.get(value) as FormControl;
+            requirements.push(
+              valueMustMatchWithControlName(matchingFormControl, value),
+            );
+            break;
+        }
       }
+    }
+    if (requirements.length) {
+      this.fControl.setValidators(Validators.compose(requirements));
     }
   }
 }

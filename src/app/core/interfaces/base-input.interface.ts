@@ -6,7 +6,7 @@ export interface BaseInputProps {
   validators?: ValidatorType;
 }
 
-interface ValidatorType {
+export interface ValidatorType {
   required?: boolean;
   email?: boolean;
   max?: number;
@@ -14,4 +14,5 @@ interface ValidatorType {
   min?: number;
   minLength?: number;
   passwordStrength?: boolean;
+  mustMatchWithControl?: string;
 }

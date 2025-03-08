@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ControlContainer, ReactiveFormsModule } from '@angular/forms';
 import { SizeType } from '@core/constants';
 import { BaseInputProps } from '@core/interfaces/base-input.interface';
 import { BaseInput } from '../base-input';
@@ -22,20 +22,18 @@ export interface PasswordFieldProps extends BaseInputProps {
 })
 export class PasswordFieldComponent extends BaseInput implements OnInit {
   @Input({ required: true }) props!: PasswordFieldProps;
-  @Input() fControl!: FormControl;
-  @Input() fGroup!: FormGroup;
+  @Input() fcName!: string;
   @Input() disabled = false;
 
   showPassword = false;
 
-  constructor() {
-    super();
+  constructor(controlContainer: ControlContainer) {
+    super(controlContainer);
   }
 
   ngOnInit(): void {
-    this.initializeForm(this.props, {
-      formControl: this.fControl,
-      formGroup: this.fGroup,
-    });
+    this.fcName = this.fcName ?? this.props.fcName;
+
+    this.initFormControl(this.fcName, this.props.validators);
   }
 }

@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { UtilService } from '@shared/services/util/util.service';
 
 @Component({
   selector: 'app-input-error',
@@ -10,6 +11,8 @@ import { FormControl } from '@angular/forms';
 export class InputErrorComponent implements OnInit {
   @Input({ required: true }) fControl!: FormControl;
   @Input() labelProps!: string | null | undefined;
+
+  private utilService = inject(UtilService);
 
   errorMessage!: string;
 
@@ -34,22 +37,34 @@ export class InputErrorComponent implements OnInit {
         expectedvaluetypeinvalid: 'has a invalid type/input.',
         passwordStrength:
           'must have atleast 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.',
+        mustMatchWithControl: 'is not matched with {value}',
       };
 
       if (this.fControl?.errors) {
-        const firstKey = Object.keys(this.fControl.errors)[0];
-        if (firstKey === 'serverError') {
-          const [errorCode, errorValue] =
-            this.fControl.errors[firstKey].split(':');
-          this.errorMessage = `${this.label} ${errorList[errorCode]}`.replace(
-            sentenceCaseRegex,
-            function (c) {
-              return c.toUpperCase();
-            },
+        const firstErrorKey = Object.keys(this.fControl.errors)[0];
+        const firstErrorValue = Object.values(this.fControl.errors)[0];
+
+        let firstErrorMessage = errorList[firstErrorKey];
+
+        if (firstErrorMessage.includes('{value}')) {
+          firstErrorMessage = this.utilService.string.replacePlaceholders(
+            firstErrorMessage,
+            { value: firstErrorValue },
           );
-          return;
         }
-        this.errorMessage = `${this.label} ${errorList[firstKey]}`.replace(
+
+        // if (firstKey === 'serverError') {
+        //   const [errorCode, errorValue] =
+        //     this.fControl.errors[firstKey].split(':');
+        //   this.errorMessage = `${this.label} ${errorList[errorCode]}`.replace(
+        //     sentenceCaseRegex,
+        //     function (c) {
+        //       return c.toUpperCase();
+        //     },
+        //   );
+        //   return;
+        // }
+        this.errorMessage = `${this.label} ${firstErrorMessage}`.replace(
           sentenceCaseRegex,
           function (c) {
             return c.toUpperCase();
