@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { PasswordFieldComponent } from '@shared/components/inputs/password-field/password-field.component';
 import {
@@ -9,12 +10,18 @@ import {
 
 @Component({
   selector: 'app-login',
-  imports: [ButtonComponent, TextFieldComponent, PasswordFieldComponent],
+  imports: [
+    ReactiveFormsModule,
+    ButtonComponent,
+    TextFieldComponent,
+    PasswordFieldComponent,
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   private formBuilder = inject(FormBuilder);
+  private router = inject(Router);
 
   form!: FormGroup;
 
@@ -48,5 +55,9 @@ export class LoginComponent {
 
   submit() {
     console.log(this.form);
+  }
+
+  navigateToSignup() {
+    this.router.navigate(['auth', 'signup']);
   }
 }

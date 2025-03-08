@@ -2,7 +2,7 @@
   <h1 class="text-neutral-50 font-semibold tracking-tight text-3xl">Login</h1>
 </section>
 
-<section class="p-6 pt-0">
+<section class="p-6 pt-0" [formGroup]="form">
   <app-button
     class="w-full"
     [props]="{
@@ -29,7 +29,6 @@
       <app-text-field
         class="w-full"
         [props]="formProps['email']"
-        [fGroup]="form"
       ></app-text-field>
     </div>
 
@@ -43,10 +42,7 @@
           >Forgot your password?</span
         >
       </p>
-      <app-password-field
-        [props]="formProps['password']"
-        [fGroup]="form"
-      ></app-password-field>
+      <app-password-field [props]="formProps['password']"></app-password-field>
     </div>
 
     <app-button
@@ -55,5 +51,18 @@
       [disabled]="form.invalid"
       (onButtonClick)="submit()"
     ></app-button>
+  </section>
+
+  <section>
+    <button
+      class="outline-none flex w-full items-center justify-center mt-5"
+      (click)="navigateToSignup()"
+    >
+      <p
+        class="text-white cursor-pointer hover:text-primary-500 active:text-primary-700"
+      >
+        Don't have an account? Sign up here!
+      </p>
+    </button>
   </section>
 </section>

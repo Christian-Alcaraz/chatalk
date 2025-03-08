@@ -5,7 +5,7 @@
   </h1>
 </section>
 
-<section class="p-6 pt-0">
+<section class="p-6 pt-0" [formGroup]="form">
   <app-button
     class="w-full"
     [props]="{
@@ -41,7 +41,6 @@
             email: true,
           },
         }"
-        [fGroup]="form"
       ></app-text-field>
     </div>
 
@@ -56,7 +55,6 @@
             required: true,
           },
         }"
-        [fGroup]="form"
       ></app-password-field>
     </div>
 
@@ -66,14 +64,14 @@
       </p>
       <app-password-field
         [props]="{
-          fcName: 'retypePassword',
+          fcName: 'confirmPassword',
           placeholder: '',
           labelLoc: 'hide',
           validators: {
             required: true,
+            mustMatchWithControl: 'password',
           },
         }"
-        [fGroup]="form"
       ></app-password-field>
     </div>
 
@@ -83,5 +81,18 @@
       [disabled]="form.invalid"
       (onButtonClick)="submit()"
     ></app-button>
+  </section>
+
+  <section>
+    <button
+      class="outline-none flex w-full items-center justify-center mt-5"
+      (click)="navigateToLogin()"
+    >
+      <p
+        class="text-white cursor-pointer hover:text-primary-500 active:text-primary-700"
+      >
+        Already have an account? Go to login
+      </p>
+    </button>
   </section>
 </section>
