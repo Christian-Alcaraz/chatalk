@@ -1,6 +1,9 @@
 @use 'tailwindcss';
 
 @theme {
+  --background-image-google-icon: url('public/images/google-icon.svg');
+
+  // COLORS
   --color-primary-50: #f2f7f7;
   --color-primary-100: #dfece9;
   --color-primary-200: #cde0dd;
