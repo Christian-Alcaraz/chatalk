@@ -4,13 +4,16 @@
 
 <section class="p-6 pt-0" [formGroup]="form">
   <app-button
-    class="w-full"
+    class="block w-full [&>[data-slot=button]]:h-[52px] [&>[data-slot=button]]:!bg-neutral-900"
     [props]="{
       label: 'Continue with Google',
       color: 'neutral',
       size: 'lg',
       type: 'solid',
+      prefixIcon:
+        'inline-block h-[24px] w-[24px] bg-google-icon bg-[size:24px] bg-no-repeat pr-8',
     }"
+    (onButtonClick)="redirectToGoogleOAuth()"
   ></app-button>
 
   <section class="relative my-3">

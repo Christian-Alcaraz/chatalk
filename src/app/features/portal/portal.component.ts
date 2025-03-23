@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-portal',
   imports: [],
   templateUrl: './portal.component.html',
-  styleUrl: './portal.component.scss'
+  styleUrl: './portal.component.scss',
 })
-export class PortalComponent {
-
-}
+export class PortalComponent {}

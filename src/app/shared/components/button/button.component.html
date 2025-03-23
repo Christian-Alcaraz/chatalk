@@ -3,6 +3,8 @@
     data-slot="button"
     class="outline-none transition-colors duration-200 ease-in-out font-medium rounded-xl disabled:text-neutral-400 disabled:bg-neutral-100 w-[inherit]"
     [class.pointer-events-none]="disabled"
+    [class.cursor-pointer]="!disabled"
+    [class.cursor-pointer]="!disabled"
     [ngClass]="{
       'px-5 py-1.5': !props?.size || props?.size === size.Medium,
       'px-3 py-1': props?.size === size.Small,
@@ -35,6 +37,7 @@
     data-slot="button"
     class="outline-none transition-colors duration-200 ease-in-out font-medium rounded-xl border disabled:border-neutral-200 disabled:text-neutral-400 disabled:bg-neutral-100 w-[inherit]"
     [class.pointer-events-none]="disabled"
+    [class.cursor-pointer]="!disabled"
     [ngClass]="{
       'px-5 py-1.5': !props?.size || props?.size === size.Medium,
       'px-3 py-1': props?.size === size.Small,
@@ -67,6 +70,7 @@
     data-slot="button"
     class="outline-none transition-colors duration-200 ease-in-out font-medium rounded-xl border border-transparent disabled:text-neutral-400 disabled:bg-neutral-100 w-[inherit]"
     [class.pointer-events-none]="disabled"
+    [class.cursor-pointer]="!disabled"
     [ngClass]="{
       'px-5 py-1.5': !props?.size || props?.size === size.Medium,
       'px-3 py-1': props?.size === size.Small,
@@ -101,6 +105,7 @@
     data-slot="button"
     class="outline-none flex items-center justify-center transition-colors duration-200 ease-in-out rounded-full font-medium disabled:text-neutral-400 disabled:bg-neutral-100"
     [class.pointer-events-none]="disabled"
+    [class.cursor-pointer]="!disabled"
     [ngClass]="{
       'text-[1.4rem] p-5 h-6 w-6': props?.size === 'md',
       'text-[0.75rem] p-3 h-2 w-2': !props?.size || props?.size === 'sm',
@@ -133,6 +138,7 @@
     data-slot="button"
     class="outline-none flex items-center justify-center transition-colors duration-200 ease-in-out border rounded-full font-medium disabled:text-neutral-400 disabled:bg-neutral-100"
     [class.pointer-events-none]="disabled"
+    [class.cursor-pointer]="!disabled"
     [ngClass]="{
       'text-[1.4rem] p-5 h-6 w-6': props?.size === 'md',
       'text-[0.75rem] p-3 h-2 w-2': !props?.size || props?.size === 'sm',
@@ -165,6 +171,7 @@
     data-slot="button"
     class="outline-none flex items-center justify-center transition-colors duration-200 border border-transparent ease-in-out rounded-full font-medium disabled:text-neutral-400 disabled:bg-neutral-100"
     [class.pointer-events-none]="disabled"
+    [class.cursor-pointer]="!disabled"
     [ngClass]="{
       'text-[1.4rem] p-5 h-6 w-6': props?.size === 'md',
       'text-[0.75rem] p-3 h-2 w-2': !props?.size || props?.size === 'sm',

@@ -7,6 +7,8 @@ import {
   TextFieldComponent,
   TextFieldProps,
 } from '@shared/components/inputs/text-field/text-field.component';
+import { AuthService } from '@shared/services/api/auth/auth.service';
+import { GoogleOAuthService } from '@shared/services/api/oauth2/google/google-oauth.service';
 
 @Component({
   selector: 'app-login',
@@ -20,8 +22,10 @@ import {
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  private formBuilder = inject(FormBuilder);
-  private router = inject(Router);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly router = inject(Router);
+  private readonly googleOAuthService = inject(GoogleOAuthService);
+  private readonly authService = inject(AuthService);
 
   form!: FormGroup;
 
@@ -54,7 +58,17 @@ export class LoginComponent {
   }
 
   submit() {
-    console.log(this.form);
+    this.authService.login().subscribe({
+      next: () => {},
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
+
+  redirectToGoogleOAuth() {
+    const href = this.googleOAuthService.getGoogleOAuthHREF();
+    window.location.assign(href);
   }
 
   navigateToSignup() {

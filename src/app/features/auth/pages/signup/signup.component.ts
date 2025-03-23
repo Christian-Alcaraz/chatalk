@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { PasswordFieldComponent } from '@shared/components/inputs/password-field/password-field.component';
 import { TextFieldComponent } from '@shared/components/inputs/text-field/text-field.component';
+import { GoogleOAuthService } from '@shared/services/api/oauth2/google/google-oauth.service';
 
 @Component({
   selector: 'app-signup',
@@ -21,6 +22,7 @@ import { TextFieldComponent } from '@shared/components/inputs/text-field/text-fi
 export class SignupComponent {
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
+  private googleOAuthService = inject(GoogleOAuthService);
 
   form!: FormGroup;
 
@@ -38,6 +40,10 @@ export class SignupComponent {
   }
 
   submit() {}
+
+  redirectToGoogleOAuth() {
+    this.googleOAuthService.consentLogin();
+  }
 
   navigateToLogin() {
     this.router.navigate(['auth', 'login']);

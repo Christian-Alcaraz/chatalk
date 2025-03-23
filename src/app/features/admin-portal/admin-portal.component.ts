@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-admin-portal',
   imports: [],
   templateUrl: './admin-portal.component.html',
-  styleUrl: './admin-portal.component.scss'
+  styleUrl: './admin-portal.component.scss',
 })
-export class AdminPortalComponent {
-
-}
+export class AdminPortalComponent {}

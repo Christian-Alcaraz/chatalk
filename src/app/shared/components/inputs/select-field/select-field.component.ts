@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-select-field',
   imports: [],
   templateUrl: './select-field.component.html',
-  styleUrl: './select-field.component.scss'
+  styleUrl: './select-field.component.scss',
 })
-export class SelectFieldComponent {
-
-}
+export class SelectFieldComponent {}
