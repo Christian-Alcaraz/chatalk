@@ -58,12 +58,15 @@ export class LoginComponent {
   }
 
   submit() {
-    this.authService.login().subscribe({
-      next: () => {},
-      error: (err) => {
-        console.error(err);
-      },
-    });
+    // Attach this back
+    // this.authService.login().subscribe({
+    //   next: () => {},
+    //   error: (err) => {
+    //     console.error(err);
+    //   },
+    // });
+
+    this.router.navigate(['portal']);
   }
 
   redirectToGoogleOAuth() {

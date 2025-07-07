@@ -48,10 +48,12 @@
       <app-password-field [props]="formProps['password']"></app-password-field>
     </div>
 
+    <!-- 
+      Attach [disabled]="form.invalid" props
+    -->
     <app-button
       class="w-full"
       [props]="{ label: 'Login' }"
-      [disabled]="form.invalid"
       (onButtonClick)="submit()"
     ></app-button>
   </section>
