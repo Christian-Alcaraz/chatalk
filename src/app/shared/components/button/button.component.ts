@@ -54,4 +54,6 @@ export class ButtonComponent implements OnInit {
   ngOnInit(): void {
     this.type = this.props?.type ?? this.buttonTypes.Solid;
   }
+
+  //TODO: Implement NG-ICONS package here and still implements font-awesome cdn css import
 }
