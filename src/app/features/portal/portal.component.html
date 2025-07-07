@@ -1,1 +1,87 @@
-<p>portal works!</p>
+<div class="bg-neutral-950 w-full h-full grid grid-cols-12">
+  <aside
+    data-name="left-col"
+    class="h-full col-span-4 flex-col border-r-[1.5px] border-neutral-800"
+  >
+    <header class="mt-6 text-md border-b-1 border-neutral-800 px-6 pb-6">
+      <!-- TITLE -->
+      <section data-name="header-title" class="grid grid-cols-12 mb-7">
+        <section data-name="profile" class="col-span-8 flex items-center gap-4">
+          <picture class="inline-block w-[48px] h-[48px] rounded-full bg-white">
+          </picture>
+
+          <h1 class="text-xl text-white">{{ userFullName }}</h1>
+        </section>
+        <!-- TODO: Implement NgIcon in Button Component -->
+        <!-- ? May not be necessary, just make avatar clickable then popup menu??? -->
+        <section class="col-span-4 place-self-end">
+          <button
+            class="flex w-[48px] h-[48px] items-center justify-center rounded-full bg-primary-500 text-white"
+          >
+            <ng-icon name="saxSetting2Outline" color="white"></ng-icon>
+          </button>
+        </section>
+      </section>
+
+      <!-- CTAS -->
+      <section
+        data-name="header-ctas"
+        class="flex w-full items-center justify-between gap-4 mb-4"
+      >
+        <app-button
+          class="w-full"
+          [props]="{
+            label: 'New Chat',
+            size: 'lg',
+            prefixIcon: 'fa-solid fa-user-plus',
+          }"
+        ></app-button>
+        <app-button
+          class="w-full"
+          [props]="{
+            label: 'New Group',
+            size: 'lg',
+            color: 'neutral',
+            prefixIcon: 'fa-solid fa-users',
+          }"
+        ></app-button>
+      </section>
+
+      <!-- TODO: Create Searchfield Input Component -->
+      <section
+        data-name="search-message"
+        class="flex items-center rounded-xl bg-neutral-800 py-2 px-4 gap-4"
+      >
+        <ng-icon name="saxSearchNormal1Outline" color="white"></ng-icon>
+        <p class="text-white">Search...</p>
+      </section>
+    </header>
+    <main class="p-6">
+      <h1 class="text-neutral-300 font-medium tracking-wide mb-8">
+        Recent Chats
+      </h1>
+
+      <!-- For Loop scrollable -->
+      @for (chat of recentChats; track chat.id) {
+        <article
+          class="flex items-center p-2 rounded-xl mb-4 hover:bg-neutral-700 cursor-pointer"
+        >
+          <picture
+            class="inline-block w-[48px] h-[48px] rounded-full bg-white mr-4"
+          >
+          </picture>
+
+          <section data-name="chat-info" class="flex-col">
+            <h2 class="text-white">{{ chat.fullName }}</h2>
+            <p class="text-neutral-500 text-sm">
+              {{ chat.messageSnippet }}
+              <span class="text-[10px]">{{ chat.timeDelivered }}</span>
+            </p>
+          </section>
+        </article>
+      }
+    </main>
+  </aside>
+
+  <section data-name="right-col" class="col-span-8"></section>
+</div>
