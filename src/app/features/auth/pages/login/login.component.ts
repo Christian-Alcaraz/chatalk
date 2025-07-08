@@ -70,8 +70,9 @@ export class LoginComponent {
   }
 
   redirectToGoogleOAuth() {
-    const href = this.googleOAuthService.getGoogleOAuthHREF();
-    window.location.assign(href);
+    // const href = this.googleOAuthService.getGoogleOAuthHREF();
+    // window.location.assign(href);
+    this.router.navigate(['portal']);
   }
 
   navigateToSignup() {
