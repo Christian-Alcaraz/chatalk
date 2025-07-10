@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { provideIcons } from '@ng-icons/core';
 import * as heroIconsMicro from '@ng-icons/heroicons/micro';
 import * as heroIconsMini from '@ng-icons/heroicons/mini';
@@ -27,6 +27,12 @@ const compiledIcons = {
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'chatalk';
+
+  constructor() {}
+
+  ngOnInit(): void {}
+
+  ngOnDestroy(): void {}
 }

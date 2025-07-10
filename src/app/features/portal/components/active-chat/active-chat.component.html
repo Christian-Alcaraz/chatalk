@@ -12,7 +12,7 @@
   <section
     class="max-h-[calc(100vh-180px)] overflow-y-auto px-10 py-6 flex flex-col gap-6"
   >
-    @for (message of activeChat; track message.messageId) {
+    @for (message of activeChat; track $index) {
       <section class="flex items-center">
         @if (message.userId !== userState.id) {
           <picture
@@ -39,7 +39,7 @@
     class="border-t-[1.5px] border-neutral-800 bg-black-theme flex items-center justify-center flex-1"
   >
     <section
-      class="flex items-center bg-neutral-400/10 rounded-3xl w-[95%] py-2 px-6"
+      class="flex items-center bg-neutral-400/10 rounded-3xl w-[95%] py-2 px-6 mt-[10px]"
     >
       <p class="text-white">Aa</p>
       <button
