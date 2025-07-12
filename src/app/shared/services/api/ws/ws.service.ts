@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
-type WebSocketMessageTypes = 'request' | 'info' | 'error' | 'ping';
+type WebSocketMessageTypes = 'request' | 'info' | 'error' | 'ping' | 'ack' | 'pong' | 'broadcast';
 
 export interface WebSocketMessage {
   type: WebSocketMessageTypes;
@@ -16,6 +16,9 @@ export class WsService {
   private readonly RETRY_INTERVAL_IN_SECONDS = 1000 * 10; // 10 secs
   private WILL_RETRY = true;
   private clientWebSocketId!: string;
+  private hasEstablishedConnection = false;
+  private reconnectAttempts = 0;
+  private readonly MAX_RECONNECT_ATTEMPTS = 5;
 
   private intervalId!: any;
 
@@ -26,7 +29,8 @@ export class WsService {
   }
 
   /**
-   * * Bug: First attempt to connect doesn't send message. Then when reattempt successful, the message sent stacks??
+   * * Fixed: Prevent duplicate connection messages by tracking connection state
+   * * Fixed: Improved reconnection logic to prevent message stacking
    */
 
   disconnect() {
@@ -34,6 +38,7 @@ export class WsService {
       console.info('Disconnecting to WSS');
       console.log('Before close:', this.wsClient.readyState); // Should be 1 (OPEN)
       this.WILL_RETRY = false;
+      this.hasEstablishedConnection = false;
       
       // Clear any pending reconnection attempts
       if (this.intervalId) {
@@ -74,23 +79,43 @@ export class WsService {
           'You have successfully established connection to WebSocket Server.',
         );
 
-        const connectSuccess: WebSocketMessage = {
-          type: 'info',
-          message: 'Client established connection',
-        };
-        clearInterval(this.intervalId);
-        this.intervalId = null;
-        // Send message to server for testing
+        // Clear any pending reconnection attempts
+        if (this.intervalId) {
+          clearInterval(this.intervalId);
+          this.intervalId = null;
+        }
 
-        this.sendMessage(connectSuccess);
+        // Reset reconnection attempts on successful connection
+        this.reconnectAttempts = 0;
+
+        // Only send connection message on first successful connection
+        if (!this.hasEstablishedConnection) {
+          const connectSuccess: WebSocketMessage = {
+            type: 'info',
+            message: 'Client established connection',
+          };
+          
+          this.sendMessage(connectSuccess);
+          this.hasEstablishedConnection = true;
+        } else {
+          console.log('Reconnected to WebSocket server');
+        }
       };
 
       this.wsClient.onmessage = (event) => {
         const { data } = event;
 
-        const test = data.toString('utf-8');
-
-        console.log('Server sent message', test);
+        try {
+          // Try to parse as JSON first
+          const parsedMessage = JSON.parse(data);
+          console.log('Server sent JSON message:', parsedMessage);
+          
+          // Handle different message types from server
+          this.handleServerMessage(parsedMessage);
+        } catch (parseError) {
+          // Handle plain text messages
+          console.log('Server sent text message:', data);
+        }
       };
 
       this.wsClient.onclose = (event) => {
@@ -101,6 +126,8 @@ export class WsService {
           console.log('Attempting to reconnect...');
           this.reconnect();
         } else {
+          // Reset connection flag for manual closes
+          this.hasEstablishedConnection = false;
           // Clean up if it was a manual close
           this.cleanup();
         }
@@ -142,15 +169,92 @@ export class WsService {
     return this.wsClient && this.wsClient.readyState === WebSocket.OPEN;
   }
 
+  resetConnectionState() {
+    this.hasEstablishedConnection = false;
+    this.WILL_RETRY = true;
+    this.reconnectAttempts = 0;
+  }
+
+  // Handle different types of messages from server
+  private handleServerMessage(message: any) {
+    switch (message.type) {
+      case 'ack':
+        console.log('Server acknowledged message:', message.message);
+        break;
+      
+      case 'pong':
+        console.log('Server responded to ping at:', message.timestamp);
+        break;
+      
+      case 'error':
+        console.error('Server reported error:', message.message);
+        break;
+      
+      case 'broadcast':
+        console.log('Server broadcast:', message.message);
+        // Handle broadcast messages (e.g., notifications to all clients)
+        break;
+      
+      default:
+        console.log('Unknown message type from server:', message);
+    }
+  }
+
+  // Send a ping to test connection
+  sendPing() {
+    const pingMessage: WebSocketMessage = {
+      type: 'ping',
+      message: 'Client ping'
+    };
+    return this.sendMessage(pingMessage);
+  }
+
   private reconnect() {
     if (!this.WILL_RETRY) {
-      clearInterval(this.intervalId);
-      this.intervalId = null;
+      if (this.intervalId) {
+        clearInterval(this.intervalId);
+        this.intervalId = null;
+      }
       return;
     }
 
-    this.intervalId ??= setInterval(() => {
+    // Check if we've exceeded max reconnection attempts
+    if (this.reconnectAttempts >= this.MAX_RECONNECT_ATTEMPTS) {
+      console.error('Max reconnection attempts reached. Stopping reconnection.');
+      this.WILL_RETRY = false;
+      if (this.intervalId) {
+        clearInterval(this.intervalId);
+        this.intervalId = null;
+      }
+      return;
+    }
+
+    // Prevent multiple reconnection attempts
+    if (this.intervalId) {
+      return;
+    }
+
+    console.log(`Setting up reconnection interval... (Attempt ${this.reconnectAttempts + 1}/${this.MAX_RECONNECT_ATTEMPTS})`);
+    this.intervalId = setInterval(() => {
+      console.log(`Attempting reconnection... (Attempt ${this.reconnectAttempts + 1}/${this.MAX_RECONNECT_ATTEMPTS})`);
+      
+      if (this.wsClient && this.wsClient.readyState === WebSocket.OPEN) {
+        // Already connected, clear the interval
+        clearInterval(this.intervalId);
+        this.intervalId = null;
+        return;
+      }
+      
+      this.reconnectAttempts++;
       this.connect();
+
+      // If this was the last attempt, stop trying
+      if (this.reconnectAttempts >= this.MAX_RECONNECT_ATTEMPTS) {
+        clearInterval(this.intervalId);
+        this.intervalId = null;
+        this.WILL_RETRY = false;
+        console.error('Max reconnection attempts reached. Giving up.');
+      }
     }, this.RETRY_INTERVAL_IN_SECONDS);
   }
 
@@ -159,6 +263,10 @@ export class WsService {
       clearInterval(this.intervalId);
       this.intervalId = null;
     }
+    
+    // Reset connection state
+    this.hasEstablishedConnection = false;
+    this.reconnectAttempts = 0;
     
     // Reset the WebSocket client reference
     if (this.wsClient) {
