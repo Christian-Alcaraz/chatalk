@@ -34,16 +34,36 @@ export class WsService {
       console.info('Disconnecting to WSS');
       console.log('Before close:', this.wsClient.readyState); // Should be 1 (OPEN)
       this.WILL_RETRY = false;
+      
+      // Clear any pending reconnection attempts
+      if (this.intervalId) {
+        clearInterval(this.intervalId);
+        this.intervalId = null;
+      }
+      
       this.wsClient.close(1000, 'Manual Closing');
       console.log('After close:', this.wsClient.readyState); // Likely 2 (CLOSING)
     }
   }
 
   connect() {
+    // Don't create new connection if already connected
+    if (this.wsClient && this.wsClient.readyState === WebSocket.OPEN) {
+      console.log('WebSocket is already connected');
+      return;
+    }
+
+    // Don't create new connection if currently connecting
+    if (this.wsClient && this.wsClient.readyState === WebSocket.CONNECTING) {
+      console.log('WebSocket is already connecting');
+      return;
+    }
+
     if (
       !this.wsClient ||
       (this.wsClient && this.wsClient.readyState >= WebSocket.CLOSING)
     ) {
+      console.log('Creating new WebSocket connection...');
       // ? for distinction of requester identity
       this.wsClient = new WebSocket(
         `${environment.WS_URL}/${this.clientWebSocketId}/test`,
@@ -74,28 +94,52 @@ export class WsService {
       };
 
       this.wsClient.onclose = (event) => {
-        console.log('You send server close request');
-        // this.reconnect();
+        console.log('WebSocket connection closed', event.code, event.reason);
+        
+        // Only attempt reconnect if it wasn't a manual close and we should retry
+        if (event.code !== 1000 && this.WILL_RETRY) {
+          console.log('Attempting to reconnect...');
+          this.reconnect();
+        } else {
+          // Clean up if it was a manual close
+          this.cleanup();
+        }
       };
 
       this.wsClient.onerror = (error) => {
-        console.error(error);
+        console.error('WebSocket error occurred:', error);
+        // Connection will be handled by onclose event
       };
     }
   }
 
   // TODO: Find a way to handle "Sending" state and "Delivered" state
   sendMessage(message: WebSocketMessage) {
-    const stringfiedMessage = JSON.stringify(message);
-
-    console.log('WS Client ReadState', this.wsClient!.readyState);
-
-    if (this.wsClient.readyState !== WebSocket.OPEN) {
-      console.error('Connection with Websocket server hasnt been established ');
-      return;
+    if (!this.wsClient) {
+      console.error('WebSocket client not initialized');
+      return false;
     }
 
-    this.wsClient.send(stringfiedMessage);
+    const stringfiedMessage = JSON.stringify(message);
+
+    console.log('WS Client ReadState', this.wsClient.readyState);
+
+    if (this.wsClient.readyState !== WebSocket.OPEN) {
+      console.error('Connection with Websocket server hasnt been established');
+      return false;
+    }
+
+    try {
+      this.wsClient.send(stringfiedMessage);
+      return true;
+    } catch (error) {
+      console.error('Failed to send message:', error);
+      return false;
+    }
+  }
+
+  isConnected(): boolean {
+    return this.wsClient && this.wsClient.readyState === WebSocket.OPEN;
   }
 
   private reconnect() {
@@ -108,5 +152,17 @@ export class WsService {
     this.intervalId ??= setInterval(() => {
       this.connect();
     }, this.RETRY_INTERVAL_IN_SECONDS);
+  }
+
+  private cleanup() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
+    
+    // Reset the WebSocket client reference
+    if (this.wsClient) {
+      this.wsClient = null as any;
+    }
   }
 }
