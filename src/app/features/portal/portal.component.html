@@ -59,6 +59,16 @@
 
   <!-- TODO: Make this a child component that connected to a state of active chat? -->
   <section data-name="right-col" class="col-span-9 flex flex-col">
+    <section class="flex items-center">
+      <app-button
+        [props]="{ color: 'primary', label: 'Open Connection' }"
+        (onButtonClick)="openSocketConnection()"
+      ></app-button>
+      <app-button
+        [props]="{ color: 'error', label: 'Close Connection' }"
+        (onButtonClick)="closeSocketConnection()"
+      ></app-button>
+    </section>
     <app-active-chat></app-active-chat>
   </section>
 </div>

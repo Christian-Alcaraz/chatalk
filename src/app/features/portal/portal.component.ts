@@ -20,6 +20,7 @@ import { RecentChatsComponent } from './components/recent-chats/recent-chats.com
 })
 export class PortalComponent implements OnInit, OnDestroy {
   private readonly webSocketService = inject(WsService);
+  private readonly uuid = crypto.randomUUID();
 
   userState = {
     id: '123',
@@ -27,10 +28,20 @@ export class PortalComponent implements OnInit, OnDestroy {
   };
 
   constructor() {
-    this.webSocketService.connect();
+    this.webSocketService.setClientWebSocketId(this.uuid);
   }
 
   ngOnInit(): void {}
 
-  ngOnDestroy(): void {}
+  openSocketConnection() {
+    this.webSocketService.connect();
+  }
+
+  closeSocketConnection() {
+    this.webSocketService.disconnect();
+  }
+
+  ngOnDestroy(): void {
+    this.webSocketService.disconnect();
+  }
 }
