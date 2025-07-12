@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { NgIcon } from '@ng-icons/core';
+import { ChatTimestampPipe } from '@shared/pipes/chat-timestamp/chat-timestamp.pipe';
 import {
   WebSocketMessage,
   WsService,
@@ -8,7 +9,7 @@ import {
 
 @Component({
   selector: 'app-active-chat',
-  imports: [CommonModule, NgIcon],
+  imports: [CommonModule, NgIcon, ChatTimestampPipe],
   standalone: true,
   templateUrl: './active-chat.component.html',
   styleUrl: './active-chat.component.scss',
@@ -16,85 +17,9 @@ import {
 export class ActiveChatComponent {
   private readonly webSocketService = inject(WsService);
 
-  userState = {
-    id: '123',
-    fullName: 'John Doe',
-  };
+  readonly clientId = this.webSocketService.ClientWebSocketId;
 
-  activeChat = [
-    {
-      messageId: '1',
-      userId: '1',
-      message: `Once upon a time, there was something going on inside the village. Whereas in the castle, a thing with dracula is quite peculiar.`,
-      timeDelivered: '1:20pm',
-    },
-    {
-      messageId: '2',
-      userId: '123',
-      message: `Once upon a time, there was something going on inside the village. Whereas in the castle, a thing with dracula is quite peculiar.`,
-      timeDelivered: '1:20pm',
-    },
-    {
-      messageId: '1',
-      userId: '1',
-      message: `Once upon a time, there was something going on inside the village. Whereas in the castle, a thing with dracula is quite peculiar.`,
-      timeDelivered: '1:20pm',
-    },
-    {
-      messageId: '2',
-      userId: '123',
-      message: `Once upon a time, there was something going on inside the village. Whereas in the castle, a thing with dracula is quite peculiar.`,
-      timeDelivered: '1:20pm',
-    },
-    {
-      messageId: '1',
-      userId: '1',
-      message: `Once upon a time, there was something going on inside the village. Whereas in the castle, a thing with dracula is quite peculiar.`,
-      timeDelivered: '1:20pm',
-    },
-    {
-      messageId: '2',
-      userId: '123',
-      message: `Once upon a time, there was something going on inside the village. Whereas in the castle, a thing with dracula is quite peculiar.`,
-      timeDelivered: '1:20pm',
-    },
-    {
-      messageId: '1',
-      userId: '1',
-      message: `Once upon a time, there was something going on inside the village. Whereas in the castle, a thing with dracula is quite peculiar.`,
-      timeDelivered: '1:20pm',
-    },
-    {
-      messageId: '2',
-      userId: '123',
-      message: `Once upon a time, there was something going on inside the village. Whereas in the castle, a thing with dracula is quite peculiar.`,
-      timeDelivered: '1:20pm',
-    },
-    {
-      messageId: '1',
-      userId: '1',
-      message: `Once upon a time, there was something going on inside the village. Whereas in the castle, a thing with dracula is quite peculiar.`,
-      timeDelivered: '1:20pm',
-    },
-    {
-      messageId: '2',
-      userId: '123',
-      message: `Once upon a time, there was something going on inside the village. Whereas in the castle, a thing with dracula is quite peculiar.`,
-      timeDelivered: '1:20pm',
-    },
-    {
-      messageId: '1',
-      userId: '1',
-      message: `Once upon a time, there was something going on inside the village. Whereas in the castle, a thing with dracula is quite peculiar.`,
-      timeDelivered: '1:20pm',
-    },
-    {
-      messageId: '2',
-      userId: '123',
-      message: `Once upon a time, there was something going on inside the village. Whereas in the castle, a thing with dracula is quite peculiar.`,
-      timeDelivered: '1:20pm',
-    },
-  ];
+  activeChat!: any;
 
   // sendSocketMessage() {
   //   const message: WebSocketMessage = {
@@ -105,15 +30,29 @@ export class ActiveChatComponent {
   //   this.webSocketService.sendMessage(message);
   // }
 
+  constructor() {
+    this.activeChat = this.webSocketService.activeChat;
+  }
+
   submitMessage(inputElem: HTMLInputElement) {
     const message = inputElem.value;
     if (!message) return;
 
     const wsMessage: WebSocketMessage = {
-      type: 'info',
+      type: 'request',
       message,
+      timestamp: new Date(),
     };
-    this.webSocketService.sendMessage(wsMessage);
-    inputElem.value = '';
+
+    try {
+      this.webSocketService.sendMessage(wsMessage);
+      this.webSocketService.activeChat.update((prevValue: any) => [
+        ...prevValue,
+        { ...wsMessage, senderId: this.clientId },
+      ]);
+      inputElem.value = '';
+    } catch (e) {
+      console.error('Client is not connected to server');
+    }
   }
 }

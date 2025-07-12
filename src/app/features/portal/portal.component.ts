@@ -23,7 +23,7 @@ export class PortalComponent implements OnInit, OnDestroy {
   private readonly uuid = crypto.randomUUID();
 
   userState = {
-    id: '123',
+    id: this.uuid,
     fullName: 'John Doe',
   };
 

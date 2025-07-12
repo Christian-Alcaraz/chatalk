@@ -13,9 +13,9 @@
     class="max-h-[calc(100vh-300px)] min-h-[calc(100vh-300px)] overflow-y-auto px-10 py-6 flex flex-col gap-6"
   >
     <!-- max-h-[calc(100vh-180px)] min-h-[calc(100vh-180px)] -->
-    <!-- @for (message of activeChat; track $index) {
+    @for (chat of activeChat(); track $index) {
       <section class="flex items-center">
-        @if (message.userId !== userState.id) {
+        @if (chat.senderId !== clientId) {
           <picture
             class="inline-block w-[32px] h-[32px] rounded-full bg-white self-end mr-4"
           >
@@ -24,16 +24,19 @@
         <article
           class="flex flex-col justify-center bg-white border border-[#282524] rounded-xl px-4 py-3 max-w-[45%] w-fit"
           [ngClass]="{
-            'bg-white ml-auto text-neutral-950':
-              message.userId === userState.id,
-            'bg-black-theme/50 text-white': message.userId !== userState.id,
+            'bg-white ml-auto text-neutral-950': chat.senderId === clientId,
+            'bg-black-theme/50 text-white': chat.senderId !== clientId,
           }"
         >
-          <p class="mb-2">{{ message.message }}</p>
-          <small class="text-neutral-700">{{ message.timeDelivered }}</small>
+          <p class="mb-2">
+            {{ chat.message }}
+          </p>
+          <small class="text-neutral-700">{{
+            chat.timestamp | chatTimestamp
+          }}</small>
         </article>
       </section>
-    } -->
+    }
   </section>
 
   <section
