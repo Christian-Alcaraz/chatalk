@@ -55,4 +55,12 @@ export class ActiveChatComponent {
       console.error('Client is not connected to server');
     }
   }
+
+  isPrevBubbleSameSender(index: number) {
+    if (index === 0) return true;
+    return (
+      this.activeChat()[index].senderId ===
+      this.activeChat()[index - 1].senderId
+    );
+  }
 }

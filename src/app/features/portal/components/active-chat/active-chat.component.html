@@ -10,11 +10,11 @@
   class="flex flex-col flex-1 bg-linear-[90deg,rgba(0,0,0,0.1)_0%,rgba(255,255,255,0.1)_45%,rgba(255,255,255,0.1)_50%,rgba(0,0,0,0.1)]"
 >
   <section
-    class="max-h-[calc(100vh-300px)] min-h-[calc(100vh-300px)] overflow-y-auto px-10 py-6 flex flex-col gap-6"
+    class="max-h-[calc(100vh-300px)] min-h-[calc(100vh-300px)] overflow-y-auto px-10 py-6 flex flex-col"
   >
     <!-- max-h-[calc(100vh-180px)] min-h-[calc(100vh-180px)] -->
     @for (chat of activeChat(); track $index) {
-      <section class="flex items-center">
+      <section class="flex items-center max-h-[100%]">
         @if (chat.senderId !== clientId) {
           <picture
             class="inline-block w-[32px] h-[32px] rounded-full bg-white self-end mr-4"
@@ -22,16 +22,18 @@
           </picture>
         }
         <article
-          class="flex flex-col justify-center bg-white border border-[#282524] rounded-xl px-4 py-3 max-w-[45%] w-fit"
+          class="flex flex-col justify-center bg-white border border-[#282524] rounded-xl px-3 py-2 max-w-[45%] w-fit"
           [ngClass]="{
             'bg-white ml-auto text-neutral-950': chat.senderId === clientId,
             'bg-black-theme/50 text-white': chat.senderId !== clientId,
+            'mt-1': isPrevBubbleSameSender($index),
+            'mt-4': !isPrevBubbleSameSender($index),
           }"
         >
-          <p class="mb-2">
+          <p class="mb-1 text-pretty break-words">
             {{ chat.message }}
           </p>
-          <small class="text-neutral-700">{{
+          <small class="text-neutral-700 text-xs">{{
             chat.timestamp | chatTimestamp
           }}</small>
         </article>
@@ -54,7 +56,7 @@
       <input
         #messageInput
         type="text"
-        class="text-white outline-none flex-1"
+        class="text-white outline-none flex-1 mr-2"
         placeholder="Aa"
         (keydown.enter)="submitMessage(messageInput)"
       />
