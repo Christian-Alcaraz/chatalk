@@ -39,6 +39,7 @@ export class SignupComponent {
     console.log(this.form);
   }
 
+  // TODO: signup
   submit() {}
 
   redirectToGoogleOAuth() {

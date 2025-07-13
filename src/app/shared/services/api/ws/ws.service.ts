@@ -29,7 +29,6 @@ export class WsService {
   private readonly RETRY_INTERVAL_IN_SECONDS = 1000 * 10; // 10 secs
 
   // TODO: Refactor this to signal???
-
   activeChat: any = signal([]);
 
   constructor() {}
@@ -128,8 +127,7 @@ export class WsService {
           console.info('Attempting to reconnect...');
           this.reconnect();
         } else {
-          this.hasEstablishedConnection = false;
-          //cleanup
+          this.cleanup();
         }
         // this.reconnect();
       };
@@ -158,7 +156,6 @@ export class WsService {
     this.wsClient.send(stringfiedMessage);
   }
 
-  // TODO: send this to signal??? or send this to ActiveChatComponent
   private handleServerMessage(message: any) {
     switch (message.type) {
       case 'ping':

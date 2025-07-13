@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
-import { StringService } from './string/string.service';
+import { CookieService } from './cookie.service';
+import { StringService } from './string.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UtilService {
-  constructor(public string: StringService) {}
+  constructor(
+    public string: StringService,
+    public cookie: CookieService,
+  ) {}
 }

@@ -59,20 +59,21 @@ export class LoginComponent {
 
   submit() {
     // Attach this back
-    // this.authService.login().subscribe({
-    //   next: () => {},
-    //   error: (err) => {
-    //     console.error(err);
-    //   },
-    // });
+    const { email, password } = this.form.getRawValue();
 
-    this.router.navigate(['portal']);
+    this.authService.login(email, password).subscribe({
+      next: () => {},
+      error: (err) => {
+        console.error(err);
+      },
+    });
+    // this.router.navigate(['portal']);
   }
 
   redirectToGoogleOAuth() {
-    // const href = this.googleOAuthService.getGoogleOAuthHREF();
-    // window.location.assign(href);
-    this.router.navigate(['portal']);
+    const href = this.googleOAuthService.getGoogleOAuthHREF();
+    window.location.assign(href);
+    // this.router.navigate(['portal']);
   }
 
   navigateToSignup() {
