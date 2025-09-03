@@ -1,0 +1,74 @@
+<div class="bg-black-theme w-full min-h-screen grid grid-cols-12">
+  <aside
+    data-name="left-col"
+    class="h-full col-span-3 flex-col border-r-[1.5px] border-neutral-800"
+  >
+    <header class="mt-6 text-md border-b-1 border-neutral-800 px-6 pb-6">
+      <!-- TITLE -->
+      <section data-name="header-title" class="grid grid-cols-12 mb-7">
+        <section data-name="profile" class="col-span-8 flex items-center gap-4">
+          <button
+            class="flex items-center justify-center w-[48px] h-[48px] rounded-full overflow-auto transition-color duration-[50ms] ease-in outline-white outline-offset-2 cursor-pointer hover:outline-2"
+          >
+            <picture class="inline-block bg-white w-full h-full"> </picture>
+          </button>
+
+          <h1 class="text-xl text-white">{{ userState.fullName }}</h1>
+        </section>
+        <!-- TODO: Implement NgIcon in Button Component -->
+      </section>
+
+      <!-- CTAS -->
+      <section
+        data-name="header-ctas"
+        class="flex w-full items-center justify-between gap-4 mb-4"
+      >
+        <app-button
+          class="w-full"
+          [props]="{
+            label: 'New Chat',
+            size: 'lg',
+            prefixIcon: 'fa-solid fa-user-plus',
+          }"
+        ></app-button>
+        <app-button
+          class="w-full"
+          [props]="{
+            label: 'New Group',
+            size: 'lg',
+            color: 'neutral',
+            prefixIcon: 'fa-solid fa-users',
+          }"
+        ></app-button>
+      </section>
+
+      <!-- TODO: Create Searchfield Input Component -->
+      <section
+        data-name="search-message"
+        class="flex items-center rounded-xl bg-neutral-800 py-2 px-4 gap-4"
+      >
+        <ng-icon name="saxSearchNormal1Outline" color="white"></ng-icon>
+        <p class="text-white">Search...</p>
+      </section>
+    </header>
+    <main class="flex-1">
+      <!-- TODO: Connect api data to signal into component -->
+      <app-recent-chats></app-recent-chats>
+    </main>
+  </aside>
+
+  <!-- TODO: Make this a child component that connected to a state of active chat? -->
+  <section data-name="right-col" class="col-span-9 flex flex-col">
+    <section class="flex items-center">
+      <app-button
+        [props]="{ color: 'primary', label: 'Open Connection' }"
+        (onButtonClick)="openSocketConnection()"
+      ></app-button>
+      <app-button
+        [props]="{ color: 'error', label: 'Close Connection' }"
+        (onButtonClick)="closeSocketConnection()"
+      ></app-button>
+    </section>
+    <app-active-chat></app-active-chat>
+  </section>
+</div>

@@ -1,0 +1,72 @@
+<header
+  class="flex items-center border-b-[1.5px] border-neutral-800 py-6 px-10"
+>
+  <picture class="inline-block w-[48px] h-[48px] rounded-full bg-white mr-4">
+  </picture>
+  <h1 class="text-white text-2xl tracking-wide">Sara Doe</h1>
+</header>
+
+<main
+  class="flex flex-col flex-1 bg-linear-[90deg,rgba(0,0,0,0.1)_0%,rgba(255,255,255,0.1)_45%,rgba(255,255,255,0.1)_50%,rgba(0,0,0,0.1)]"
+>
+  <section
+    class="max-h-[calc(100vh-300px)] min-h-[calc(100vh-300px)] overflow-y-auto px-10 py-6 flex flex-col"
+  >
+    <!-- max-h-[calc(100vh-180px)] min-h-[calc(100vh-180px)] -->
+    @for (chat of activeChat(); track $index) {
+      <section class="flex items-center max-h-[100%]">
+        @if (chat.senderId !== clientId) {
+          <picture
+            class="inline-block w-[32px] h-[32px] rounded-full bg-white self-end mr-4"
+          >
+          </picture>
+        }
+        <article
+          class="flex flex-col justify-center bg-white border border-[#282524] rounded-xl px-3 py-2 max-w-[45%] w-fit"
+          [ngClass]="{
+            'bg-white ml-auto text-neutral-950': chat.senderId === clientId,
+            'bg-black-theme/50 text-white': chat.senderId !== clientId,
+            'mt-1': isPrevBubbleSameSender($index),
+            'mt-4': !isPrevBubbleSameSender($index),
+          }"
+        >
+          <p class="mb-1 text-pretty break-words">
+            {{ chat.message }}
+          </p>
+          <small class="text-neutral-700 text-xs">{{
+            chat.timestamp | chatTimestamp
+          }}</small>
+        </article>
+      </section>
+    }
+  </section>
+
+  <section
+    class="border-t-[1.5px] border-neutral-800 bg-black-theme flex items-center justify-center flex-1"
+  >
+    <section
+      class="flex items-center bg-neutral-400/10 rounded-3xl w-[95%] py-2 px-6 mt-[10px]"
+    >
+      <!-- <p class="text-white">Aa</p>
+      <button
+        class="bg-primary-500 p-[0.65rem] rounded-full flex items-center justify-center ml-auto"
+      >
+      </button> -->
+
+      <input
+        #messageInput
+        type="text"
+        class="text-white outline-none flex-1 mr-2"
+        placeholder="Aa"
+        (keydown.enter)="submitMessage(messageInput)"
+      />
+
+      <button
+        class="flex basis-[48px] items-center justify-center p-3 bg-primary-500 rounded-full w-[48px] h-[48px]"
+        (click)="submitMessage(messageInput)"
+      >
+        <ng-icon name="saxSend2Outline" color="white"></ng-icon>
+      </button>
+    </section>
+  </section>
+</main>

@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "lint": "ng lint",
+    "format": "prettier {src,e2e}/**/*.{ts,json,md,scss} --write"
   },
   "private": true,
   "dependencies": {
@@ -17,21 +19,34 @@
     "@angular/platform-browser": "^19.2.0",
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
+    "@ng-icons/core": "^31.4.0",
+    "@ng-icons/heroicons": "^31.4.0",
+    "@ng-icons/iconsax": "^31.4.0",
+    "postcss": "^8.5.3",
     "rxjs": "~7.8.0",
+    "tailwindcss": "^4.0.9",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.2.0",
+    "@angular-eslint/builder": "^19.1.0",
+    "@angular-eslint/eslint-plugin": "^19.1.0",
+    "@angular-eslint/eslint-plugin-template": "^19.1.0",
+    "@angular-eslint/schematics": "^19.1.0",
+    "@angular-eslint/template-parser": "^19.1.0",
     "@angular/cli": "^19.2.0",
     "@angular/compiler-cli": "^19.2.0",
+    "@tailwindcss/postcss": "^4.0.9",
     "@types/jasmine": "~5.1.0",
+    "eslint": "^9.21.0",
     "jasmine-core": "~5.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "prettier": "^3.5.3",
     "typescript": "~5.7.2"
   }
 }

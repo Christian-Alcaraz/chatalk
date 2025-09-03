@@ -1,0 +1,73 @@
+<section class="flex flex-col space-y-1.5 p-6 -mb-2">
+  <h1 class="text-neutral-50 font-semibold tracking-tight text-3xl">Login</h1>
+</section>
+
+<section class="p-6 pt-0" [formGroup]="form">
+  <app-button
+    class="block w-full [&>[data-slot=button]]:h-[52px] [&>[data-slot=button]]:bg-neutral-900 hover:[&>[data-slot=button]]:bg-neutral-800"
+    [props]="{
+      label: 'Continue with Google',
+      color: 'neutral',
+      size: 'lg',
+      type: 'solid',
+      prefixIcon:
+        'inline-block h-[24px] w-[24px] bg-google-icon bg-[size:24px] bg-no-repeat pr-8',
+    }"
+    (onButtonClick)="redirectToGoogleOAuth()"
+  ></app-button>
+
+  <section class="relative my-3">
+    <div class="absolute inset-0 flex items-center">
+      <div class="w-full border-t border-gray-400"></div>
+    </div>
+
+    <div class="relative flex justify-center text-lg">
+      <span class="px-2 bg-neutral-950 text-white font-semibold">OR</span>
+    </div>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <div>
+      <p class="inline-block text-sm font-medium text-white mb-1.5">Email</p>
+      <app-text-field
+        class="w-full"
+        [props]="formProps['email']"
+      ></app-text-field>
+    </div>
+
+    <div>
+      <p
+        class="inline-flex items-center justify-between w-full text-sm font-medium text-white mb-1.5"
+      >
+        <span>Password</span>
+        <span
+          class="underline select-none cursor-pointer hover:text-primary-500 active:text-primary-700"
+          >Forgot your password?</span
+        >
+      </p>
+      <app-password-field [props]="formProps['password']"></app-password-field>
+    </div>
+
+    <!-- 
+      Attach [disabled]="form.invalid" props
+    -->
+    <app-button
+      class="w-full"
+      [props]="{ label: 'Login' }"
+      (onButtonClick)="submit()"
+    ></app-button>
+  </section>
+
+  <section>
+    <button
+      class="outline-none flex w-full items-center justify-center mt-5"
+      (click)="navigateToSignup()"
+    >
+      <p
+        class="text-white cursor-pointer hover:text-primary-500 active:text-primary-700"
+      >
+        Don't have an account? Sign up here!
+      </p>
+    </button>
+  </section>
+</section>

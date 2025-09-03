@@ -1,0 +1,101 @@
+<section class="flex flex-col space-y-1.5 p-6 -mb-2">
+  <h1 class="text-neutral-50 font-semibold tracking-tight text-3xl">Signup</h1>
+  <h1 class="text-neutral-100 text-sm">
+    Create connection around the world in minutes.
+  </h1>
+</section>
+
+<section class="p-6 pt-0" [formGroup]="form">
+  <app-button
+    class="block w-full [&>[data-slot=button]]:h-[52px] [&>[data-slot=button]]:bg-neutral-900 hover:[&>[data-slot=button]]:bg-neutral-800"
+    [props]="{
+      label: 'Sign up with Google',
+      color: 'neutral',
+      size: 'lg',
+      type: 'solid',
+      prefixIcon:
+        'inline-block h-[24px] w-[24px] bg-google-icon bg-[size:24px] bg-no-repeat pr-8',
+    }"
+    (onButtonClick)="redirectToGoogleOAuth()"
+  ></app-button>
+
+  <section class="relative my-3">
+    <div class="absolute inset-0 flex items-center">
+      <div class="w-full border-t border-gray-400"></div>
+    </div>
+
+    <div class="relative flex justify-center text-lg">
+      <span class="px-2 bg-neutral-950 text-white font-semibold">OR</span>
+    </div>
+  </section>
+
+  <section class="flex flex-col gap-4">
+    <div>
+      <p class="inline-block text-sm font-medium text-white mb-1.5">Email</p>
+      <app-text-field
+        class="w-full"
+        [props]="{
+          fcName: 'email',
+          type: 'email',
+          placeholder: 'sample@email.com',
+          labelLoc: 'hide',
+          validators: {
+            required: true,
+            email: true,
+          },
+        }"
+      ></app-text-field>
+    </div>
+
+    <div>
+      <p class="inline-block text-sm font-medium text-white mb-1.5">Password</p>
+      <app-password-field
+        [props]="{
+          fcName: 'password',
+          placeholder: '',
+          labelLoc: 'hide',
+          validators: {
+            required: true,
+          },
+        }"
+      ></app-password-field>
+    </div>
+
+    <div>
+      <p class="inline-block text-sm font-medium text-white mb-1.5">
+        Re-type Password
+      </p>
+      <app-password-field
+        [props]="{
+          fcName: 'confirmPassword',
+          placeholder: '',
+          labelLoc: 'hide',
+          validators: {
+            required: true,
+            mustMatchWithControl: 'password',
+          },
+        }"
+      ></app-password-field>
+    </div>
+
+    <app-button
+      class="w-full"
+      [props]="{ label: 'Signup' }"
+      [disabled]="form.invalid"
+      (onButtonClick)="submit()"
+    ></app-button>
+  </section>
+
+  <section>
+    <button
+      class="outline-none flex w-full items-center justify-center mt-5"
+      (click)="navigateToLogin()"
+    >
+      <p
+        class="text-white cursor-pointer hover:text-primary-500 active:text-primary-700"
+      >
+        Already have an account? Go to login
+      </p>
+    </button>
+  </section>
+</section>

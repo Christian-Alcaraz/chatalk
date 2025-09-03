@@ -5,6 +5,13 @@
   },
   "typescript.tsdk": "node_modules/typescript/lib",
   "editor.bracketPairColorization.enabled": true,
+  "editor.quickSuggestions": {
+    // For tailwind extension. https://github.com/tailwindlabs/tailwindcss-intellisense
+    "strings": "on"
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
@@ -17,5 +24,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
-  "css.customData": [".vscode/tailwind.json"]
+  "css.customData": [".vscode/tailwind.json"],
+  "tailwindCSS.emmetCompletions": true,
+  "tailwindCSS.experimental.configFile": "src/assets/css/tailwind.scss"
 }
